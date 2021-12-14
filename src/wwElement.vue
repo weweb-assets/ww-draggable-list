@@ -1,6 +1,13 @@
 <template>
     <div v-if="!items">Please bind variable</div>
-    <draggable v-else :list="items" :group="{name: group}" :item-key="itemKey" ghost-class="ghost" :disabled="isEditing">
+    <draggable
+        v-else
+        :list="items"
+        :group="{ name: group }"
+        :item-key="itemKey"
+        ghost-class="ghost"
+        :disabled="isEditing"
+    >
         <template #item="{ element, index }">
             <div>
                 <wwLayoutItemContext :index="index" :item="{}" is-repeat :data="element">
@@ -28,7 +35,19 @@ export default {
     },
     emits: ["update:content", "update:content:effect", "trigger-event", "element-event"],
     setup() {
-        return { internalGroup: wwLib.wwUtils.getUid() };
+        return { internalGroup: wwLib.wwUtils.getUid(), items: ref([]) };
+    },
+    watch: {
+        internalItems(value) {
+            if (!_.isEqual(value, this.items)) {
+                this.items = value;
+            }
+        },
+        items(value) {
+            if (!_.isEqual(value, this.internalItems)) {
+                this.internalItems = value;
+            }
+        },
     },
     computed: {
         isEditing() {
@@ -38,12 +57,14 @@ export default {
             // eslint-disable-next-line no-unreachable
             return false;
         },
-        items: {
+        internalItems: {
             get() {
                 if (!this.content.variableId && !(this.wwElementState.props && this.wwElementState.props.items)) {
                     return null;
                 }
-                const data = (this.wwElementState.props && this.wwElementState.props.items) || wwLib.wwVariable.getValue(this.content.variableId);
+                const data =
+                    (this.wwElementState.props && this.wwElementState.props.items) ||
+                    wwLib.wwVariable.getValue(this.content.variableId);
                 if (!Array.isArray(data)) {
                     return null;
                 } else {
@@ -57,11 +78,11 @@ export default {
             },
         },
         group() {
-          return (this.wwElementState.props && this.wwElementState.props.group) || this.internalGroup
+            return (this.wwElementState.props && this.wwElementState.props.group) || this.internalGroup;
         },
         itemKey() {
-          return (this.wwElementState.props && this.wwElementState.props.itemKey) || this.content.itemKey
-        }
+            return (this.wwElementState.props && this.wwElementState.props.itemKey) || this.content.itemKey;
+        },
     },
 };
 </script>
