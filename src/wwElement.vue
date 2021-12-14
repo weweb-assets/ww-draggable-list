@@ -1,6 +1,6 @@
 <template>
     <div v-if="!items">Please bind variable</div>
-    <draggable v-else v-model="items" :group="group" :item-key="itemKey" ghost-class="ghost" :disabled="isEditing">
+    <draggable v-else v-model="items" :group="{name: group}" :item-key="itemKey" ghost-class="ghost" :disabled="isEditing">
         <template #item="{ element, index }">
             <div>
                 <wwLayoutItemContext :index="index" :item="{}" is-repeat :data="element">
