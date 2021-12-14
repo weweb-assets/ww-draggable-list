@@ -40,10 +40,10 @@ export default {
         },
         items: {
             get() {
-                if (!this.content.variableId && !this.wwProps.items) {
+                if (!this.content.variableId && !(this.wwProps && this.wwProps.items)) {
                     return null;
                 }
-                const data = this.wwProps.items || wwLib.wwVariable.getValue(this.content.variableId);
+                const data = (this.wwProps && this.wwProps.items) || wwLib.wwVariable.getValue(this.content.variableId);
                 if (!Array.isArray(data)) {
                     return null;
                 } else {
@@ -57,10 +57,10 @@ export default {
             },
         },
         group() {
-          return this.wwProps.group || this.internalGroup
+          return (this.wwProps && this.wwProps.group) || this.internalGroup
         },
         itemKey() {
-          return this.wwProps.itemKey || this.content.itemKey
+          return (this.wwProps && this.wwProps.itemKey) || this.content.itemKey
         }
     },
 };
