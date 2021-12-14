@@ -21,7 +21,7 @@ export default {
     props: {
         content: { type: Object, required: true },
         wwFrontState: { type: Object, required: true },
-        wwProps: { type: Object, required: true },
+        wwElementState: { type: Object, required: true },
         /* wwEditor:start */
         wwEditorState: { type: Object, required: true },
         /* wwEditor:end */
@@ -40,10 +40,10 @@ export default {
         },
         items: {
             get() {
-                if (!this.content.variableId && !(this.wwProps && this.wwProps.items)) {
+                if (!this.content.variableId && !(this.wwElementState.wwProps && this.wwElementState.wwProps.items)) {
                     return null;
                 }
-                const data = (this.wwProps && this.wwProps.items) || wwLib.wwVariable.getValue(this.content.variableId);
+                const data = (this.wwElementState.wwProps && this.wwElementState.wwProps.items) || wwLib.wwVariable.getValue(this.content.variableId);
                 if (!Array.isArray(data)) {
                     return null;
                 } else {
@@ -57,10 +57,10 @@ export default {
             },
         },
         group() {
-          return (this.wwProps && this.wwProps.group) || this.internalGroup
+          return (this.wwElementState.wwProps && this.wwElementState.wwProps.group) || this.internalGroup
         },
         itemKey() {
-          return (this.wwProps && this.wwProps.itemKey) || this.content.itemKey
+          return (this.wwElementState.wwProps && this.wwElementState.wwProps.itemKey) || this.content.itemKey
         }
     },
 };
