@@ -47,10 +47,13 @@ export default {
                 }
             },
         },
-        items(value) {
-            if (!_.isEqual(value, this.internalItems)) {
-                this.internalItems = value;
-            }
+        items: {
+            handler(value) {
+                if (!_.isEqual(value, this.internalItems)) {
+                    this.internalItems = value;
+                }
+            },
+            deep: true,
         },
     },
     computed: {
