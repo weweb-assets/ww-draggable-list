@@ -20,6 +20,7 @@
 
 <script>
 import draggable from "vuedraggable";
+import {ref} from 'vue'
 
 export default {
     components: {
