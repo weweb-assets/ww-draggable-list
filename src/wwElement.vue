@@ -20,7 +20,7 @@
 
 <script>
 import draggable from "vuedraggable";
-import {ref} from 'vue'
+import { ref } from "vue";
 
 export default {
     components: {
@@ -39,10 +39,13 @@ export default {
         return { internalGroup: wwLib.wwUtils.getUid(), items: ref([]) };
     },
     watch: {
-        internalItems(value) {
-            if (!_.isEqual(value, this.items)) {
-                this.items = value;
-            }
+        internalItems: {
+            immediate: true,
+            handler(value) {
+                if (!_.isEqual(value, this.items)) {
+                    this.items = value;
+                }
+            },
         },
         items(value) {
             if (!_.isEqual(value, this.internalItems)) {
