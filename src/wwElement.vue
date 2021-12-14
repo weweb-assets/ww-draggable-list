@@ -1,6 +1,6 @@
 <template>
     <div v-if="!items">Please bind variable</div>
-    <draggable v-else v-model="items" :group="group" :item-key="content.itemKey" ghost-class="ghost" :disabled="isEditing">
+    <draggable v-else v-model="items" :group="group" :item-key="itemKey" ghost-class="ghost" :disabled="isEditing">
         <template #item="{ element, index }">
             <div>
                 <wwLayoutItemContext :index="index" :item="{}" is-repeat :data="element">
@@ -26,7 +26,7 @@ export default {
         wwEditorState: { type: Object, required: true },
         /* wwEditor:end */
     },
-    emits: ["update:content", "update:content:effect", "trigger-event"],
+    emits: ["update:content", "update:content:effect", "trigger-event", "element-event"],
     setup() {
         return { internalGroup: wwLib.wwUtils.getUid() };
     },
@@ -40,10 +40,10 @@ export default {
         },
         items: {
             get() {
-                if (!this.content.variableId) {
+                if (!this.content.variableId && !this.wwProps.items) {
                     return null;
                 }
-                const data = wwLib.wwVariable.getValue(this.content.variableId);
+                const data = this.wwProps.items || wwLib.wwVariable.getValue(this.content.variableId);
                 if (!Array.isArray(data)) {
                     return null;
                 } else {
@@ -52,11 +52,15 @@ export default {
             },
             set(items) {
                 this.$emit("trigger-event", { name: "change", event: { value: items } });
+                this.$emit("element-event", { name: "change", event: { value: items } });
                 if (this.content.variableId) wwLib.wwVariable.updateValue(this.content.variableId, items);
             },
         },
         group() {
-          return wwProps.group || this.internalGroup
+          return this.wwProps.group || this.internalGroup
+        },
+        itemKey() {
+          return this.wwProps.itemKey || this.content.itemKey
         }
     },
 };
