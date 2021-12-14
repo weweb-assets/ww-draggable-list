@@ -40,10 +40,10 @@ export default {
         },
         items: {
             get() {
-                if (!this.content.variableId && !(this.wwElementState.wwProps && this.wwElementState.wwProps.items)) {
+                if (!this.content.variableId && !(this.wwElementState.props && this.wwElementState.props.items)) {
                     return null;
                 }
-                const data = (this.wwElementState.wwProps && this.wwElementState.wwProps.items) || wwLib.wwVariable.getValue(this.content.variableId);
+                const data = (this.wwElementState.props && this.wwElementState.props.items) || wwLib.wwVariable.getValue(this.content.variableId);
                 if (!Array.isArray(data)) {
                     return null;
                 } else {
@@ -57,10 +57,10 @@ export default {
             },
         },
         group() {
-          return (this.wwElementState.wwProps && this.wwElementState.wwProps.group) || this.internalGroup
+          return (this.wwElementState.props && this.wwElementState.props.group) || this.internalGroup
         },
         itemKey() {
-          return (this.wwElementState.wwProps && this.wwElementState.wwProps.itemKey) || this.content.itemKey
+          return (this.wwElementState.props && this.wwElementState.props.itemKey) || this.content.itemKey
         }
     },
 };
