@@ -2,11 +2,13 @@
     <div v-if="!items">Please bind variable</div>
     <draggable
         v-else
+        tag="transition-group"
         v-model="items"
-        :group="{ name: group }"
+        :group="group"
         :item-key="itemKey"
         ghost-class="ghost"
         :disabled="isEditing"
+        :component-data="{ tag: 'ul', name: 'flip-list', type: 'transition' }"
     >
         <template #item="{ element, index }">
             <div>
@@ -28,7 +30,6 @@ export default {
     },
     props: {
         content: { type: Object, required: true },
-        wwFrontState: { type: Object, required: true },
         wwElementState: { type: Object, required: true },
         /* wwEditor:start */
         wwEditorState: { type: Object, required: true },
@@ -77,6 +78,9 @@ export default {
 </script>
 
 <style scoped>
+.flip-list-move {
+  transition: transform 0.5s;
+}
 .ghost {
     opacity: 0.5;
     background: #c8ebfb;
