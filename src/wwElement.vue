@@ -2,7 +2,7 @@
     <div v-if="!items">Please bind variable</div>
     <draggable
         v-else
-        :list="items"
+        v-model="items"
         :group="{ name: group }"
         :item-key="itemKey"
         ghost-class="ghost"
@@ -38,24 +38,6 @@ export default {
     setup() {
         return { internalGroup: wwLib.wwUtils.getUid(), items: ref([]) };
     },
-    watch: {
-        internalItems: {
-            immediate: true,
-            handler(value) {
-                if (!_.isEqual(value, this.items)) {
-                    this.items = value;
-                }
-            },
-        },
-        items: {
-            handler(value) {
-                if (!_.isEqual(value, this.internalItems)) {
-                    this.internalItems = value;
-                }
-            },
-            deep: true,
-        },
-    },
     computed: {
         isEditing() {
             /* wwEditor:start */
@@ -64,7 +46,7 @@ export default {
             // eslint-disable-next-line no-unreachable
             return false;
         },
-        internalItems: {
+        items: {
             get() {
                 if (!this.content.variableId && !(this.wwElementState.props && this.wwElementState.props.items)) {
                     return null;
